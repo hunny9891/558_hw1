@@ -60,10 +60,10 @@ def transactions(request):
     if request.method == 'POST':
         image_data = request.data
         image = request.FILES['image'].read()
-        #classify_image(image)
         description, categories = classify_image(image)
         image_data['classification'] = categories
         image_data['description'] = description
+        image_data['image'] = str(image)
         image_serializer = ImageSerializer(data=image_data)
         if image_serializer.is_valid():
             image_serializer.save()
