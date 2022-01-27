@@ -1,0 +1,191 @@
+<!-- ******************************************* -->
+<!-- TCSS 558: Homework 1                        -->
+<!-- Winter 2022, Applied Distributed Computing  -->
+<!-- based on sample code provided by Eyhab      -->
+<!-- Al-Masri in TCSS 573. Adapted from sample   -->
+<!-- code provided by Microsoft                  -->
+<!--                                             -->
+<!-- This code allows the upload of an image     -->
+<!-- file which is then processed by our Django  -->
+<!-- proxy server and returns the classification -->
+<!-- and scene description of the image          -->
+<!-- ******************************************* -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>What Is This Thing?</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <!-- using the Darkly style sheet. Go to https://bootswatch.com/ and click on Themes and select a theme if you wish to change this current theme! -->
+    <link rel="stylesheet" href="https://bootswatch.com/5/darkly/bootstrap.css">
+</head>
+
+<!-- onload calls a function that initializes some HTML elements -->
+<body onload="initElements()">
+
+    <br>
+    <h1 class="text-primary" style="text-align:center"> What Is This Thing? </h1>
+    <h3 style="text-align:center"> Upload an Image and Let an AI Try to Guess!</h3>
+    <br>
+    <br>
+
+    <!-- this form allows users to select a file to be uploaded to Azure -->
+    <form style="text-align:center">
+        <h4 class="card-title">Select an image</h4>
+        <input type="file" class="btn btn-primary"/>
+    </form>
+
+
+    <script type="text/javascript">
+        // Hide the following HTML elements when page (HTML body) loads in browser. 
+        function initElements() {
+            $ ("#tags_title").hide();
+            $ ("#outputResults").hide();
+            $ ("#imageInfo").hide();
+        }
+
+        // Callback from a <input type="file" onchange="analyzeImage(this)"> - see the <form>...</form> HTML code above
+        // This callback function is called when a file is selected
+        // the function is attached to the change event (e.g., when a file is uploaded), which triggers this function. 
+        // that is, when you select a file from your local computer, the selection is change
+        // which triggers this function
+        $('input[type=file]').change(function () {
+           $("#resultsInfo tr").remove();
+           $("#tag_info tr").remove();
+
+            var file = this.files[0];
+
+            // identify the first file selected
+            
+            // for more details on the FileReader: 
+            // https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+            // create a FileReader instance to read 
+            // the file from local computer or storage
+            var reader = new FileReader();
+
+            // the event handler onload will be executed when a file is loaded  
+            reader.onload = function () {
+                $.ajax({
+                    url:"http://127.0.0.1:8000/api/images",
+                    beforeSend: function (xhrObj) {
+                        // Request headers
+                        // xhrObj.setRequestHeader("Content-Type","application/json");
+                        xhrObj.setRequestHeader("Content-Type", "application/octet-stream");
+                        xhrObj.setRequestHeader("Prediction-Key", "key"); // private key redacted
+                    },
+                    type: "POST",
+                    // Request body
+                    // reader.result returns the file's content
+                    data: reader.result,
+                    processData: false,
+
+                })
+                    // when the ready state is complete or done
+                    .done(function (data) {
+                        //alert("success");
+
+                        // *************************************************************
+                        // -> begin parsing the JSON data
+                        // Use a JSON formatter online tool to parse the response 
+                        // from the text console of the analyze method
+                        // Data extraction below is based on the data structure
+                        // of the JSON response
+                        // *************************************************************
+
+                        // Extract the top label with the score as well as the iteration id
+                        var prediction_iid = "";
+						var prediction_score = ""
+						var prediction_name = ""
+                        // error handling:
+                        // check to see if the categories element has children elements
+                        if (data["predictions"]["0"] === undefined) {
+                            prediction_iid = "N/A";
+							prediction_score = "N/A"; 
+							prediction_name = "N/A";                     
+                        } else {
+                            prediction_name = data["predictions"]["0"].tagName
+                            // replace the underscore with a space
+                            prediction_name = prediction_name.replace("_", " ");    
+                            prediction_score = data["predictions"]["0"].probability.toFixed(2);
+							prediction_iid = data["iteration"]
+                        }
+
+
+                        // List all predictions that exceed a given threshold
+                        // read the predictions as an array of elements
+                        var predictions = data["predictions"];
+                        // for each valid element in predictions array, add a 
+                        // new row in the HTML table
+                        for (var pred of predictions) {
+                            // only add tags that exceed a threshold of 0.00001
+                            if (parseFloat(pred.probability) > 0.00001 ) {
+                                $("#tag_info").find('tbody')
+                                    .append($('<tr>')
+                                        .append($('<td>')
+                                            .text(pred.tagName))
+                                        .append($('<td>')
+                                            .text(pred.probability.toFixed(2)))
+                                    );
+                            }
+                        }
+
+
+                        // show the hidden HTML elements now that we have information parsed
+                        // show the tags_title element
+                        $ ("#tags_title").show();
+                        $ ("#outputResults").show();
+
+                        // ******* display image ************************************************
+                        // display the chosen image on the HTML page
+                        // get the path of the image file
+                        var path = (window.URL || window.webkitURL).createObjectURL(file);
+                        // append that information to the source of the image tag
+                        $ ("#imgsrc").attr("src", path).height("300").width("300");
+                        $ ("#imageInfo").show();
+
+                        // ******* Begin binding local data to HTML elements********************
+                        // map the values of the data parsed from JSON response message 
+                        // to HTML elements within the HTML file dynamically. 
+                        $("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Iteration ID")).append($('<td>').text(prediction_iid)));
+						$("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Confidence Score")).append($('<td>').text(prediction_score)));
+						$("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Type of Sport")).append($('<td>').text(prediction_name)));
+
+                    })
+                    .fail(function () {
+                        alert("error");
+                    });
+            }
+
+            // start reading the file content as an 
+            // array buffer representing the data of the image file
+            // works as application/octet-stream content-type
+            reader.readAsArrayBuffer(file);
+
+        });
+    </script>
+
+    <!-- Image Information Table -->
+    <div class="card border-primary mb-3" style="max-width: 21rem;" id="imageInfo">
+        <div class="card-header">Selected Image</div>
+        <div class="card-body">
+          <img id="imgsrc" >
+        </div>
+    </div>
+
+    <!-- Results Information Table -->
+    <h1 id="outputResults">Results Summary</h1>
+    <table id="resultsInfo" class="table table-hover" style="width:400px">
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <!-- Tags Table -->
+    <h1 id="tags_title">Prediction Details</h1>
+    <table id="tag_info" class="table table-hover"  style="width:200px">
+        <tbody>
+
+        </tbody>
+    </table>
+</body>
+</html>
