@@ -54,6 +54,9 @@
            $("#tag_info tr").remove();
 
             var file = this.files[0];
+            var form = new FormData();
+            form.append("image", file, "name.png");
+            form.append("foo", "name.png");
 
             // identify the first file selected
             
@@ -68,16 +71,14 @@
                 $.ajax({
                     url:"http://127.0.0.1:8000/api/images",
                     beforeSend: function (xhrObj) {
-                        // Request headers
-                        //xhrObj.setRequestHeader("Content-Type","application/json");
-                        xhrObj.setRequestHeader("Content-Type", "application/octet-stream");
-                        //xhrObj.setRequestHeader("Prediction-Key", "key"); // private key redacted
+                        //xhrObj.setRequestHeader("Content-Type", "multipart/form-data");
                     },
                     type: "POST",
-                    // Request body
-                    // reader.result returns the file's content
-                    data: reader.result,
+                    timeout: 0,
                     processData: false,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    data: form,
 
                 })
                     // when the ready state is complete or done

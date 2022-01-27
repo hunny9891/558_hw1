@@ -67,6 +67,9 @@ def transactions(request):
         image_data['description'] = description
         image_data['image'] = str(image)
         image_serializer = ImageSerializer(data=image_data)
+
+        print(image_data)
+
         if image_serializer.is_valid():
             image_serializer.save()
             return JsonResponse('Entry Created in DB Successfully!', status=status.HTTP_201_CREATED, safe=False)
