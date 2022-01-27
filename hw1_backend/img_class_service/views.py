@@ -8,6 +8,7 @@ import requests
 import base64
 from rest_framework.parsers import MultiPartParser, FormParser
 
+from django.http import HttpResponse
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
@@ -38,7 +39,7 @@ def classify_image(image):
         'Ocp-Apim-Subscription-Key': '81451e83dd51453da85b6ab37d3824ba',
     }
     #bin_image = open('./img_class_service/babyme.jpeg', 'rb')
-    files = [('', ('babyme.jpeg', image, 'image/jpeg'))]
+    files = [('', ('babyme.jpeg', image, 'image/jpeg'))]  # what about pngs?
     response = requests.post(
         url, data={}, headers=headers, files=files)
     if response.status_code == 200:
@@ -52,9 +53,6 @@ def classify_image(image):
 @api_view(['GET', 'POST', 'OPTIONS'])
 @parser_classes([FormParser, MultiPartParser])
 def transactions(request):
-    if request.method == 'OPTIONS':
-        print('foo')
-        return JsonResponse('Preflight?', status=status.HTTP_200_OK, safe=False)
 
     if request.method == 'GET':
         images = Image.objects.all().order_by('-id')[:10]

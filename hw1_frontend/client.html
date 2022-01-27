@@ -69,9 +69,9 @@
                     url:"http://127.0.0.1:8000/api/images",
                     beforeSend: function (xhrObj) {
                         // Request headers
-                        // xhrObj.setRequestHeader("Content-Type","application/json");
+                        //xhrObj.setRequestHeader("Content-Type","application/json");
                         xhrObj.setRequestHeader("Content-Type", "application/octet-stream");
-                        xhrObj.setRequestHeader("Prediction-Key", "key"); // private key redacted
+                        //xhrObj.setRequestHeader("Prediction-Key", "key"); // private key redacted
                     },
                     type: "POST",
                     // Request body
