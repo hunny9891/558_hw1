@@ -49,9 +49,13 @@ def classify_image(image):
 
     return ()
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'OPTIONS'])
 @parser_classes([FormParser, MultiPartParser])
 def transactions(request):
+    if request.method == 'OPTIONS':
+        print('foo')
+        return JsonResponse('Preflight?', status=status.HTTP_200_OK, safe=False)
+
     if request.method == 'GET':
         images = Image.objects.all().order_by('-id')[:10]
         image_serializer = ImageSerializer(images, many=True)
