@@ -29,10 +29,14 @@
     <br>
     <br>
 
-    <!-- this form allows users to select a file to be uploaded to Azure -->
+
+    <!-- this form handles user input: -->
+    <!-- uploading images and sending them to proxy server and requesting history -->
     <form style="text-align:center">
         <h4 class="card-title">Select an image</h4>
         <input type="file" class="btn btn-primary"/>
+        <a id=sendToProxyBtn class="btn btn-success btn-lg">OK</a>
+        <a id=requestHistoryBtn class="btn btn-info btn-lg">History</a>
     </form>
 
 
@@ -56,7 +60,7 @@
             var file = this.files[0];
             var form = new FormData();
             form.append("image", file, "name.png");
-            form.append("foo", "name.png");
+            form.append("name", "name.png");
 
             // identify the first file selected
             
@@ -95,20 +99,20 @@
 
                         // Extract the top label with the score as well as the iteration id
                         var prediction_iid = "";
-						var prediction_score = ""
-						var prediction_name = ""
+                        var prediction_score = ""
+                        var prediction_name = ""
                         // error handling:
                         // check to see if the categories element has children elements
                         if (data["predictions"]["0"] === undefined) {
                             prediction_iid = "N/A";
-							prediction_score = "N/A"; 
-							prediction_name = "N/A";                     
+                            prediction_score = "N/A"; 
+                            prediction_name = "N/A";                     
                         } else {
                             prediction_name = data["predictions"]["0"].tagName
                             // replace the underscore with a space
                             prediction_name = prediction_name.replace("_", " ");    
                             prediction_score = data["predictions"]["0"].probability.toFixed(2);
-							prediction_iid = data["iteration"]
+                            prediction_iid = data["iteration"]
                         }
 
 
@@ -148,8 +152,8 @@
                         // map the values of the data parsed from JSON response message 
                         // to HTML elements within the HTML file dynamically. 
                         $("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Iteration ID")).append($('<td>').text(prediction_iid)));
-						$("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Confidence Score")).append($('<td>').text(prediction_score)));
-						$("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Type of Sport")).append($('<td>').text(prediction_name)));
+                        $("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Confidence Score")).append($('<td>').text(prediction_score)));
+                        $("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Type of Sport")).append($('<td>').text(prediction_name)));
 
                     })
                     .fail(function () {
