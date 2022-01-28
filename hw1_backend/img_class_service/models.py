@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Image(models.Model):
     '''Class describes an image in the database with some extra fields.'''
     id = models.AutoField(primary_key=True)

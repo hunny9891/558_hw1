@@ -1,39 +1,28 @@
-from ast import parse
-from email.mime import image
-from email.quoprimime import header_decode
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
-from .models import Image
 import requests
-import base64
-from rest_framework.parsers import MultiPartParser, FormParser
-
-from django.http import HttpResponse
 from django.http.response import JsonResponse
-from rest_framework.parsers import JSONParser
 from rest_framework import status
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import FormParser, MultiPartParser
 
 from .models import Image
 from .serializers import ImageSerializer
-from rest_framework.decorators import api_view, parser_classes
 
-
-def classify_image_from_url():
-    import requests
-
-    url = "https://tutorial1--cv.cognitiveservices.azure.com/vision/v3.2/analyze?visualFeatures=Tags,Description"
-
-    payload={"url": "https://awol.junkee.com/wp-content/uploads/2017/01/new-zealand-4308-e1483593214263.jpg"}
-    headers = {
-    'Ocp-Apim-Subscription-Key': '81451e83dd51453da85b6ab37d3824ba',
-    'Content-Type': 'application/json'
-    }
-
-    response = requests.request("POST", url, headers=headers, json=payload)
-
-    print(response.text)
 
 def classify_image(image):
+    """
+    Helper function to call the azure cognitive api
+    with the input image received in the http request
+    and get the azure response and return the description
+    and categories for the image.
+
+    Args:
+        image (str): The image recieved in the http request 
+                    as a 64 bit encoded string.
+
+    Returns:
+        [tuple]: A tuple of description and categories for the
+                    image.
+    """
     url = 'https://tutorial1--cv.cognitiveservices.azure.com/vision/v3.2/analyze?visualFeatures=Tags,Description'
     headers = {
         'Ocp-Apim-Subscription-Key': '81451e83dd51453da85b6ab37d3824ba',
@@ -50,9 +39,22 @@ def classify_image(image):
 
     return ()
 
-@api_view(['GET', 'POST', 'OPTIONS'])
+
+@api_view(['GET', 'POST'])
 @parser_classes([FormParser, MultiPartParser])
 def transactions(request):
+    """
+    This function sends the image from the request to azure
+    cognitive api with the help of a helper function and
+    records the respose and the image in the database
+    to maintain transactions history.
+
+    Args:
+        request (HttpRequest): An http request.
+
+    Returns:
+        [JsonResponse]: A json response with all fields populated.
+    """
 
     if request.method == 'GET':
         images = Image.objects.all().order_by('-id')[:10]
