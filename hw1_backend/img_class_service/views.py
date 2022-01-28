@@ -68,10 +68,9 @@ def transactions(request):
         image_data['image'] = str(image)
         image_serializer = ImageSerializer(data=image_data)
 
-        print(image_data)
-
         if image_serializer.is_valid():
             image_serializer.save()
-            print('Image saved to db successfully with details!')
+            #print('Image saved to db successfully with details!')
+            del image_data['image']
             return JsonResponse(image_data, status=status.HTTP_201_CREATED, safe=False)
         return JsonResponse('Failed to save data to database!', status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
