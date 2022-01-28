@@ -50,8 +50,7 @@
 
         // Hide the following HTML elements when page (HTML body) loads in browser. 
         function initElements() {
-            $ ("#tags_title").hide();
-            $ ("#outputResults").hide();
+            $ ("#loader").hide();
             $ ("#imageInfo").hide();
             $ ("#historyInfo").hide();
             $ ("input[type=file]").val('');
@@ -94,6 +93,8 @@
 
                 $.ajax({
                     url:"http://127.0.0.1:8000/api/images",
+                    beforeSend: function(dummy) { $ ("#loader").show(); },
+                    complete: function(dummy) { $ ("#loader").hide(); },
                     type: "POST",
                     timeout: 0,
                     processData: false,
@@ -102,8 +103,8 @@
                     data: form,
 
                 })
+
                     .done(function (json_response) {
-                        
                         $ ("#historyInfo").hide();  // valid response, hide history table 
 
                         var obj = JSON.parse(json_response);
@@ -122,6 +123,7 @@
                         $("#imageTags").text(prediction_tags);
                     })
                     .fail(function () {
+                        $ ("loader").hide(); 
                         alert("server error");
                     })
             }
@@ -135,12 +137,12 @@
 
             $.ajax({
                 url:"http://127.0.0.1:8000/api/images",
+                beforeSend: function(dummy) { $ ("#loader").show(); },
+                complete: function(dummy) { $ ("#loader").hide(); },
                 type: "GET",
             })
                 .done(function (json_response) {
-                    console.log(json_response[0])
-
-                    $ ("#historyInfo").show();
+                    $ ("#historyInfo").show(); // build the table with provided info
                     for (const [index, element] of json_response.entries()) {
                         $("#historyTable").find('tbody')
                             .append($('<tr>')
@@ -175,6 +177,13 @@
         border: 1px solid white;
       }
     </style>
+
+    <div class="container" id=loader>
+        <div class="page-header" id="banner">
+            <div class="spinner-border text-secondary" role="status">
+            </div>
+        </div>
+    </div>
 
     <div class="container" id=imageInfo>
         <div class="page-header" id="banner">
