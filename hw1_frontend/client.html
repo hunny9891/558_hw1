@@ -53,6 +53,7 @@
             $ ("#tags_title").hide();
             $ ("#outputResults").hide();
             $ ("#imageInfo").hide();
+            $ ("#historyInfo").hide();
             $ ("input[type=file]").val('');
         }
 
@@ -83,12 +84,7 @@
 
         // **************** callback for the OK button ****************
         $('a[id=sendToProxyBtn]').click(function () {
-            $("#resultsInfo tr").remove();
-            $("#tag_info tr").remove();
-
-            console.log('click');
-            console.log(name);
-
+            
             if (data == null) {
                 alert("Please upload a file first");
             } else {
@@ -107,6 +103,9 @@
 
                 })
                     .done(function (json_response) {
+                        
+                        $ ("#historyInfo").hide();  // valid response, hide history table 
+
                         var obj = JSON.parse(json_response);
                         var prediction_tags = obj.classification;
                         var prediction_desc = obj.description;
@@ -130,7 +129,38 @@
         
         // **************** callback for the history button ****************
         $('a[id=requestHistoryBtn]').click(function () {
+            $ ("#historyInfo").hide();
+            $("#historyTable tbody tr").remove();
             $ ("#imageInfo").hide();
+
+            $.ajax({
+                url:"http://127.0.0.1:8000/api/images",
+                type: "GET",
+            })
+                .done(function (json_response) {
+                    console.log(json_response[0])
+
+                    $ ("#historyInfo").show();
+                    for (const [index, element] of json_response.entries()) {
+                        $("#historyTable").find('tbody')
+                            .append($('<tr>')
+                                .append($('<td>')
+                                    .text(index))
+                                .append($('<td>')
+                                    .text(element.name))
+                                .append($('<td>')
+                                    .text(element.classification))
+                                .append($('<td>')
+                                    .text(element.description))
+                                .append($('<td>')
+                                    .text(element.timestamp))
+                            );
+                    }
+                })
+
+                .fail(function () {
+                    alert("server error");
+                })
         })
 
     </script>
@@ -159,12 +189,24 @@
         </div>
     </div>
 
-    <!-- Tags Table -->
-    <h1 id="tags_title">Prediction Details</h1>
-    <table id="tag_info" class="table table-hover"  style="width:200px">
-        <tbody>
+    <!-- Site Usage History -->
+    <div class="container" id=historyInfo>
+        <div class="page-header" id="banner">
+            <table id="historyTable" class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>File Name</th>
+                      <th>Classification</th>
+                      <th>Description</th>
+                      <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
