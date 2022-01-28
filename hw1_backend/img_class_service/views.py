@@ -8,6 +8,7 @@ import requests
 import base64
 from rest_framework.parsers import MultiPartParser, FormParser
 
+from django.http import HttpResponse
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
@@ -49,9 +50,10 @@ def classify_image(image):
 
     return ()
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'OPTIONS'])
 @parser_classes([FormParser, MultiPartParser])
 def transactions(request):
+
     if request.method == 'GET':
         images = Image.objects.all().order_by('-id')[:10]
         image_serializer = ImageSerializer(images, many=True)
@@ -65,6 +67,9 @@ def transactions(request):
         image_data['description'] = description
         image_data['image'] = str(image)
         image_serializer = ImageSerializer(data=image_data)
+
+        print(image_data)
+
         if image_serializer.is_valid():
             image_serializer.save()
             print('Image saved to db successfully with details!')
