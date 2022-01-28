@@ -38,6 +38,7 @@
         <a id=sendToProxyBtn class="btn btn-success btn-lg">OK</a>
         <a id=requestHistoryBtn class="btn btn-info btn-lg">History</a>
     </form>
+    <br>
 
 
     <script type="text/javascript">
@@ -94,80 +95,65 @@
                 form.append("image", data, name);
                 form.append("name", name);
 
+                $.ajax({
+                    url:"http://127.0.0.1:8000/api/images",
+                    type: "POST",
+                    timeout: 0,
+                    processData: false,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    data: form,
 
-                $ ("#outputResults").show();
-                
-                // ******* display image ************************************************
-                // display the chosen image on the HTML page
-                // get the path of the image file
-                var path = (window.URL || window.webkitURL).createObjectURL(data);
-                // append that information to the source of the image tag
-                $ ("#imgsrc").attr("src", path).height("500").width("500");
-                $ ("#imageInfo").show();
-
-
-                $("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Description")).append($('<td>').text("two men in boxing gloves")));
-                $("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Tags")).append($('<td>').text("person,sport,player")));
-
-                // $.ajax({
-                //     url:"http://127.0.0.1:8000/api/images",
-                //     type: "POST",
-                //     timeout: 0,
-                //     processData: false,
-                //     mimeType: "multipart/form-data",
-                //     contentType: false,
-                //     data: form,
-
-                // })
-                //     .done(function (data) {
-                //         var obj = JSON.parse(data);
-                //         var prediction_tags = obj.classification;
-                //         var prediction_desc = obj.description;
+                })
+                    .done(function (json_response) {
+                        var obj = JSON.parse(json_response);
+                        var prediction_tags = obj.classification;
+                        var prediction_desc = obj.description;
 
                         
-                //         // show the hidden HTML elements now that we have information parsed
-                //         // show the tags_title element
-                //         //$ ("#tags_title").show();
-                //         $ ("#outputResults").show();
+                        // ******* display image ************************************************
+                        // display the chosen image on the HTML page
+                        // get the path of the image file
+                        var path = (window.URL || window.webkitURL).createObjectURL(data);
+                        // append that information to the source of the image tag
+                        $ ("#imgsrc").attr("src", path);
+                        $ ("#imageInfo").show();
 
-                //         // ******* Begin binding local data to HTML elements********************
-                //         // map the values of the data parsed from JSON response message 
-                //         // to HTML elements within the HTML file dynamically. 
-                //         $("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Description")).append($('<td>').text(prediction_desc)));
-                //         $("#resultsInfo").find('tbody').append($('<tr>').append($('<td>').text("Tags")).append($('<td>').text(prediction_tags)));
-
-                //     })
-                //     .fail(function () {
-                //         alert("server error");
-                //     })
+                        // map the values of the data parsed from JSON response message 
+                        // to HTML elements within the HTML file dynamically. 
+                        $("#imageDescription").text(prediction_desc);
+                        $("#imageTags").text(prediction_tags);
+                    })
+                    .fail(function () {
+                        alert("server error");
+                    })
             }
         })
     </script>
 
-    <!-- Image Information Table -->
-    <div class="jumbotron">
-        <div class="card-header">Selected Image</div>
-        <div class="card-body">
-          <img id="imgsrc" >
+    <style>
+      body {
+        text-align: center;
+      }
+      img {
+        max-width: 600px;
+        max-height: 100%;
+        border: 1px solid white;
+      }
+    </style>
+
+    <div class="container" id=imageInfo>
+        <div class="page-header" id="banner">
+                
+            <!-- Uploaded Image -->
+            <img id="imgsrc">
+
+            <!-- Results Information -->
+            <h3 id=imageDescription> </h3>
+            <h4 class="text-primary" id=imageTags> </h4>
+
         </div>
     </div>
-    
-<!--     <div class="card border-primary mb-3" style="max-width: 21rem;text-align:center" id="imageInfo">
-        <div class="card-header">Selected Image</div>
-        <div class="card-body">
-          <img id="imgsrc" >
-        </div>
-    </div> -->
-
-    <!-- Results Information Table -->
-    <form style="text-align:center">
-        <h1 id="outputResults">Results Summary</h1>
-        <table style="text-align:center" id="resultsInfo" class="table table-hover" style="width:400px">
-            <tbody>
-
-            </tbody>
-        </table>
-    </form>
 
     <!-- Tags Table -->
     <h1 id="tags_title">Prediction Details</h1>
