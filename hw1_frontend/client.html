@@ -81,6 +81,7 @@
         });
 
 
+        // **************** callback for the OK button ****************
         $('a[id=sendToProxyBtn]').click(function () {
             $("#resultsInfo tr").remove();
             $("#tag_info tr").remove();
@@ -110,12 +111,9 @@
                         var prediction_tags = obj.classification;
                         var prediction_desc = obj.description;
 
-                        
-                        // ******* display image ************************************************
                         // display the chosen image on the HTML page
                         // get the path of the image file
                         var path = (window.URL || window.webkitURL).createObjectURL(data);
-                        // append that information to the source of the image tag
                         $ ("#imgsrc").attr("src", path);
                         $ ("#imageInfo").show();
 
@@ -129,6 +127,12 @@
                     })
             }
         })
+        
+        // **************** callback for the history button ****************
+        $('a[id=requestHistoryBtn]').click(function () {
+            $ ("#imageInfo").hide();
+        })
+
     </script>
 
     <style>
