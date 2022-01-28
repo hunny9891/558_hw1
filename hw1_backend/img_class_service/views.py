@@ -38,7 +38,7 @@ def classify_image(image):
         'Ocp-Apim-Subscription-Key': '81451e83dd51453da85b6ab37d3824ba',
     }
     #bin_image = open('./img_class_service/babyme.jpeg', 'rb')
-    files = [('', ('babyme.jpeg', image, 'image/jpeg'))]
+    files = [('', ('dummy.jpeg', image, 'image/jpeg'))]
     response = requests.post(
         url, data={}, headers=headers, files=files)
     if response.status_code == 200:
@@ -67,5 +67,6 @@ def transactions(request):
         image_serializer = ImageSerializer(data=image_data)
         if image_serializer.is_valid():
             image_serializer.save()
-            return JsonResponse('Entry Created in DB Successfully!', status=status.HTTP_201_CREATED, safe=False)
+            print('Image saved to db successfully with details!')
+            return JsonResponse(image_data, status=status.HTTP_201_CREATED, safe=False)
         return JsonResponse('Failed to save data to database!', status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
