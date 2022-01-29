@@ -2,10 +2,12 @@ runtime: python27
 threadsafe: true
 api_version: 1
 
+
 handlers:
 - url: /
   static_files: www/index.html
   upload: www/index.html
+  secure: never
 
 - url: /(.*)
   static_files: www/\1

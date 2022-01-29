@@ -5,6 +5,7 @@ var type = null;
 
 // Hide the following HTML elements when page (HTML body) loads in browser. 
 function initElements() {
+    console.log("init not-secure");
     $ ("#loader").hide();
     $ ("#imageInfo").hide();
     $ ("#historyInfo").hide();
