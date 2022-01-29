@@ -19,4 +19,7 @@ You should have installed Postgres > 10 or have third party service of the same.
 6. Run `python manage.py runserver`
 7. You should see the server up and running and ready for requests.
 
-### Instruction for Cloud (Google Cloud)
+### Instruction for Cloud (Google AWS)
+1. After doing the above.
+2. Follow https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html to deploy your app to aws.
+
