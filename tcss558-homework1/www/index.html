@@ -1,0 +1,96 @@
+<!-- ******************************************* -->
+<!-- TCSS 558: Homework 1                        -->
+<!-- Winter 2022, Applied Distributed Computing  -->
+<!-- based on sample code provided by Eyhab      -->
+<!-- Al-Masri in TCSS 573. Adapted from sample   -->
+<!-- code provided by Microsoft                  -->
+<!--                                             -->
+<!-- This code allows the upload of an image     -->
+<!-- file which is then processed by our Django  -->
+<!-- proxy server and returns the classification -->
+<!-- and scene description of the image          -->
+<!-- ******************************************* -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>What Is This Thing?</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+    <!-- using the Darkly style sheet. Go to https://bootswatch.com/ and click on Themes and select a theme if you wish to change this current theme! -->
+    <link rel="stylesheet" href="https://bootswatch.com/5/sketchy/bootstrap.css">
+</head>
+
+
+<!-- onload calls a function that initializes some HTML elements -->
+<body onload="initElements()">
+
+    <br>
+    <h1 class="text-primary" style="text-align:center"> What Is This Thing? </h1>
+    <h3 style="text-align:center"> Upload your Image and Let an AI Try to Guess!</h3>
+    <br>
+    <br>
+
+
+    <!-- this form handles user input: -->
+    <!-- uploading images and sending them to proxy server and requesting history -->
+    <form style="text-align:center">
+        <h4 class="card-title">Select an image</h4>
+        <input type="file" class="btn btn-primary"/>
+        <a id="sendToProxyBtn" class="btn btn-success btn-lg">OK</a>
+        <a id="requestHistoryBtn" class="btn btn-info btn-lg">History</a>
+    </form>
+    <br>
+
+    <style>
+      body {
+        text-align: center;
+      }
+      img {
+        max-width: 600px;
+        max-height: 100%;
+        border: 2px solid black;
+      }
+    </style>
+
+    <div class="container" id=loader>
+        <div class="page-header" id="banner">
+            <div class="spinner-border text-secondary" role="status">
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id=imageInfo>
+        <div class="page-header" id="banner">
+                
+            <!-- Uploaded Image -->
+            <img id="imgsrc">
+
+            <!-- Results Information -->
+            <h3 id=imageDescription> </h3>
+            <h4 class="text-primary" id=imageTags> </h4>
+
+        </div>
+    </div>
+
+    <!-- Site Usage History -->
+    <div class="container" id=historyInfo>
+        <div class="page-header" id="banner">
+            <table id="historyTable" class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>File Name</th>
+                      <th>Classification</th>
+                      <th>Description</th>
+                      <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
