@@ -49,7 +49,7 @@ $(function() {
             form.append("name", name);
 
             $.ajax({
-                url:"http://django-hw1-env.eba-bq2yu9vh.us-west-2.elasticbeanstalk.com/api/images",
+                url:"http://127.0.0.1:8000/api/images",
                 beforeSend: function(dummy) { $ ("#loader").show(); },
                 complete: function(dummy) { $ ("#loader").hide(); },
                 type: "POST",
@@ -93,7 +93,7 @@ $(function() {
         $ ("#imageInfo").hide();
 
         $.ajax({
-            url:"http://django-hw1-env.eba-bq2yu9vh.us-west-2.elasticbeanstalk.com/api/images",
+            url:"http://127.0.0.1:8000/api/images",
             beforeSend: function(dummy) { $ ("#loader").show(); },
             complete: function(dummy) { $ ("#loader").hide(); },
             type: "GET",
