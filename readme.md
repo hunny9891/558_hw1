@@ -5,6 +5,8 @@ The typical flow of the app is Client -> Proxy Server -> Third Party API -> Prox
 
 The app constitutes of two major compnents hw1_backend and hw1_frontend, the first one is the server and the latter is the client.
 
+Currently deployed here: http://tcss558-homework1.uw.r.appspot.com/
+
 ## How to deploy the server (hw1_backend)
 ### Prerequisites
 You should have installed a Python environment with version >= 3.9.
