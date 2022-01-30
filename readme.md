@@ -11,16 +11,18 @@ You should have installed a Python environment with version >= 3.9.
 You should have installed Postgres > 10 or have third party service of the same.
 
 ### Instructions for Local
-1. Clone this git repository.
-2. Open Terminal/Command Prompt and navigate the cloned directory.
-3. Run `pip install -r requirements.txt` to install the dependencies.
-4. Navigate to hw1_backend directory and run `python manage.py makemigrations`.
-5. Run `python manage.py migrate`
-6. Run `python manage.py runserver`
-7. You should see the server up and running and ready for requests.
+1. Open Terminal/Command Prompt and navigate the cloned directory.
+2. Run `pip install -r requirements.txt` to install the dependencies.
+3. Navigate to hw1_backend directory and run `python manage.py makemigrations`.
+4. Run `python manage.py migrate`
+5. Run `python manage.py runserver`
+6. Update hw1_frontend/www/index.html to use the local endpoint provided by the previous step ({django_server}/api/images)
+7. Open hw1_frontend/www/index.html in your browser. 
 
 ### Instruction for Cloud (Google / AWS)
 1. Follow steps 1-5 above
 2. Follow https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html to deploy the app (hw1_backend) to aws.
-3. Follow https://cloud.google.com/appengine/docs/standard/python/getting-started/hosting-a-static-website to deploy the client (hw1_frontend) to gcloud
+3. Follow https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.managing.db.html to create database
+4. Update hw1_frontend/www/index.html to use the endpoint given by AWS
+5. Follow https://cloud.google.com/appengine/docs/standard/python/getting-started/hosting-a-static-website to deploy the client (hw1_frontend) to gcloud
 
