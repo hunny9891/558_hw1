@@ -25,7 +25,7 @@ $(function() {
         var file = this.files[0];           // first file selected
         var fileReader = new FileReader();  // create FileReader instance to read local file
         fileReader.onload = function(event) {
-            data = file;
+            data = event.target.result;
             name = file.name;
             type = file.type;
         }; 
@@ -101,10 +101,29 @@ $(function() {
             .done(function (json_response) {
                 $ ("#historyInfo").show(); // build the table with provided info
                 for (const [index, element] of json_response.entries()) {
+                    
+                    //console.log(element)
+
+                    img_base64_val = btoa(unescape(encodeURIComponent(element.image)))
+
+                    //var src = (window.URL || window.webkitURL).createObjectURL(element.image);
+                    //var img = "<img src=" + src + "/>"
+
+                    //var src = "data:image/png;base64," + btoa(element.image);
+                    //var b = new Blob(element.image, {type: 'multipart/form-data'});
+                    //var img = "<img src=data:image/png;base64," + b + "/>";
+                    //var img = "<img src=data:image/png;base64," + btoa(element.image) + "/>";
+                    if (index==0) {
+                        console.log(element.image);
+                        console.log("");
+                        console.log(data);
+                    }
+
+                    var img = "<img src=data:image/jpeg;base64," + element.image + "/>"
+
                     $("#historyTable").find('tbody')
                         .append($('<tr>')
-                            .append($('<td>')
-                                .text(index))
+                            .append($('<td>' + img + '</td>'))
                             .append($('<td>')
                                 .text(element.name))
                             .append($('<td>')
