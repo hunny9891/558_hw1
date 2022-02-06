@@ -5,9 +5,9 @@ from .models import Image
 class ImageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Image
-        fields = ["name", "image", "timestamp",
-                  "classification", "description"]
+        fields = ["id","name", "image", "timestamp",
+                  "classification", "description", "favorite"]
 
         def __init__(self) -> None:
             self.fields["classification", "description",
-                        "timestamp"].required = False
+                        "timestamp", "favorite"].required = False

@@ -1,12 +1,28 @@
+import base64
 import requests
 from django.http.response import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view, parser_classes
-from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 
 from .models import Image
 from .serializers import ImageSerializer
 
+def decode_to_bytes(sixtyfourencoded: str) -> bytes:
+    """
+    Encodes a 64 bit string to ascii character code
+    and then decodes to bytes.
+
+    Args:
+        sixtyfourencoded (str): 64bit encoded representation of image
+
+    Returns:
+        [bytes]: Image represented as bytes.
+    """
+    encoded = sixtyfourencoded.encode("ascii")
+    decoded = base64.decodebytes(encoded)
+
+    return decoded
 
 def classify_image(image):
     """
@@ -40,8 +56,8 @@ def classify_image(image):
     return ()
 
 
-@api_view(['GET', 'POST'])
-@parser_classes([FormParser, MultiPartParser])
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@parser_classes([FormParser, MultiPartParser, JSONParser])
 def transactions(request):
     """
     This function sends the image from the request to azure
@@ -63,11 +79,11 @@ def transactions(request):
 
     if request.method == 'POST':
         image_data = request.data
-        image = request.FILES['image'].read()
-        description, categories = classify_image(image)
+        # image = request.FILES['image'].read()
+        byteimage = decode_to_bytes(image_data['image'])
+        description, categories = classify_image(byteimage)
         image_data['classification'] = categories
         image_data['description'] = description
-        image_data['image'] = str(image)
         image_serializer = ImageSerializer(data=image_data)
 
         if image_serializer.is_valid():
@@ -75,4 +91,32 @@ def transactions(request):
             #print('Image saved to db successfully with details!')
             del image_data['image']
             return JsonResponse(image_data, status=status.HTTP_201_CREATED, safe=False)
-        return JsonResponse('Failed to save data to database!', status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
+        return JsonResponse({'message': 'Failed to save data to database!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
+
+    if request.method == 'PUT':
+        image_data = request.data
+        id = image_data['id']
+        try:
+            image = Image.objects.filter(id=id).first()
+            image_serializer = ImageSerializer(image, data=image_data)
+            if image_serializer.is_valid():
+                image_serializer.save()
+                return JsonResponse('Record Updated Successfully!', status=status.HTTP_200_OK, safe=False)
+            else:
+                return JsonResponse('Bad Request!', status=status.HTTP_400_BAD_REQUEST, safe=False)
+        except Exception as e:
+            print(e)
+            return JsonResponse('Failed to update image!', status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
+
+    if request.method == 'DELETE':
+        image_data = request.data
+        id = image_data['id']
+        try:
+            image = Image.objects.filter(id=id)
+            image.delete()
+            return JsonResponse('', status=status.HTTP_200_OK,safe=False)
+        except Exception as e:
+            print(e)
+            return JsonResponse('Something went wrong while deleting the image!', status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
+
+            
