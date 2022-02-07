@@ -1,4 +1,5 @@
 import base64
+from email.mime import image
 import requests
 from django.http.response import JsonResponse
 from rest_framework import status
@@ -120,4 +121,21 @@ def transactions(request):
             print(e)
             return JsonResponse('Something went wrong while deleting the image!', status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
 
-            
+
+@api_view(['GET'])
+@parser_classes([JSONParser])
+def get_favorites(request):
+    """
+    Method to get top 10 favorite images from the database.
+
+    Args:
+        request (HttpRequest): An http get request
+
+    Returns:
+        [JsonResponse]: Returns top 10 most recent favorites.
+    """
+    if request.method == 'GET':
+        images = Image.objects.filter(favorite=True).order_by('-favorite')[:10]
+        print(images)
+        image_serializer = ImageSerializer(images, many=True)
+        return JsonResponse(image_serializer.data, safe=False)
