@@ -25,7 +25,7 @@ $(function() {
         var file = this.files[0];           // first file selected
         var fileReader = new FileReader();  // create FileReader instance to read local file
         fileReader.onload = function(event) {
-            data = event.target.result;
+            data = file;
             name = file.name;
             type = file.type;
         }; 
