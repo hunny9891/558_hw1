@@ -19,6 +19,8 @@ def decode_to_bytes(sixtyfourencoded: str) -> bytes:
     Returns:
         [bytes]: Image represented as bytes.
     """
+
+    sixtyfourencoded = sixtyfourencoded.split(',')[1]  # remove "data:image/png;base64," from string
     encoded = sixtyfourencoded.encode("ascii")
     decoded = base64.decodebytes(encoded)
 
@@ -88,8 +90,7 @@ def transactions(request):
 
         if image_serializer.is_valid():
             image_serializer.save()
-            #print('Image saved to db successfully with details!')
-            del image_data['image']
+            del image_data['image']  # client already has source image, no need to send back
             return JsonResponse(image_data, status=status.HTTP_201_CREATED, safe=False)
         return JsonResponse({'message': 'Failed to save data to database!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
 
