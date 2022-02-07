@@ -1,7 +1,7 @@
 // globals to be updated after file upload
 var data = null;
 var name = null;
-var type = null;
+var file = null;
 
 // Hide the following HTML elements when page (HTML body) loads in browser. 
 function initElements() {
@@ -29,7 +29,7 @@ $(function() {
        //$("#resultsInfo tr").remove();
        //$("#tag_info tr").remove();
 
-        var file = this.files[0];           // first file selected
+        file = this.files[0];           // first file selected
         var fileReader = new FileReader();  // create FileReader instance to read local file
         fileReader.onload = function() {
             data = fileReader.result;
@@ -58,7 +58,7 @@ $(function() {
             var json_data = {};
             json_data.name = name;
             json_data.image = data;
-            console.log(json_data);
+            console.log(data);
 
             $.ajax({
                 url:"http://127.0.0.1:8000/api/images",
@@ -79,7 +79,7 @@ $(function() {
 
                     // display the chosen image on the HTML page
                     // get the path of the image file
-                    var path = (window.URL || window.webkitURL).createObjectURL(data);
+                    var path = (window.URL || window.webkitURL).createObjectURL(file);
                     $ ("#imgsrc").attr("src", path);
                     $ ("#imageInfo").show();
 
