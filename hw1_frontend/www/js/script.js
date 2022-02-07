@@ -5,13 +5,37 @@ var file = null;
 
 // Hide the following HTML elements when page (HTML body) loads in browser. 
 function initElements() {
-    console.log("init not-secure");
     $ ("#loader").hide();
     $ ("#imageInfo").hide();
     $ ("#historyInfo").hide();
     $ ("input[type=file]").val('');
 }
 
+
+// **************** callback for DELETE buttons ****************
+// fid: frontend id (id of the table row to delete)
+// bid: backend id (probably shouldn't be leaking this in production code)))) )
+function deleteQuery(fid, bid) {
+
+    // remove the data on backend
+    var json_data = {};
+    json_data.id = bid;
+
+    $.ajax({
+        url:"http://127.0.0.1:8000/api/images",
+        type: "DELETE",
+        contentType: 'application/json',
+        data: JSON.stringify(json_data),
+    })
+
+        .done(function (json_response) {
+            $("#historyTable").find('tbody')  // remove data on frontend 
+                .find("tr[id=" + fid + "]").remove();
+        })
+        .fail(function () {
+            alert("server error");
+        })
+}
 
 $(function() {
 
@@ -20,14 +44,12 @@ $(function() {
     // that is, when you select a file from your local computer, the selection is change
     // which triggers this function
     $('input[type=file]').change(function () {
-       //$("#resultsInfo tr").remove();
-       //$("#tag_info tr").remove();
 
-        file = this.files[0];           // first file selected
+        file = this.files[0];               // first file selected
         var fileReader = new FileReader();  // create FileReader instance to read local file
         fileReader.onload = function() {
-            data = fileReader.result;
-            name = file.name;
+            data = fileReader.result;       // base64 encoded image
+            name = file.name;               // save image filename
         }; 
 
         fileReader.onerror = function() {
@@ -50,7 +72,6 @@ $(function() {
             var json_data = {};
             json_data.name = name;
             json_data.image = data;
-            console.log(data);
 
             $.ajax({
                 url:"http://127.0.0.1:8000/api/images",
@@ -103,12 +124,15 @@ $(function() {
                 $ ("#historyInfo").show(); // build the table with provided info
                 for (const [index, element] of json_response.entries()) {
 
+                    console.log(element)
+
                     // form the thumbnail
                     // source is expected to be the base64 encoded image provided by the database
                     var img = "<img src=" + element.image + " width=64 height=64></img>"
                     $("#historyTable").find('tbody')
                         .append($('<tr>')
-                            .append($('<td>' + img + '</td>'))
+                            .append($('<td>')
+                                .append(img))
                             .append($('<td>')
                                 .text(element.name))
                             .append($('<td>')
@@ -117,7 +141,11 @@ $(function() {
                                 .text(element.description))
                             .append($('<td>')
                                 .text(element.timestamp))
-                        );
+                            .append($('<td>')
+                                .append("<button class=\"btn btn-danger\">DELETE</button>")
+                                .attr('onClick', 'deleteQuery(' + index + ',' + element.id + ')'))
+                        .attr('id', index)
+                    );
                 }
             })
 
