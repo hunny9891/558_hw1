@@ -37,6 +37,25 @@ function deleteQuery(fid, bid) {
         })
 }
 
+
+// **************** callback for FAVORITE buttons ****************
+// fid: frontend id (id of the table row to delete)
+// bid: backend id (probably shouldn't be leaking this in production code)))) )
+function favoriteQuery(fid, bid) {
+
+    var favButton = $("#historyTable").find('tbody')  // remove data on frontend 
+                        .find("tr[id=" + fid + "]")
+                            .find("button[id=" + fid + "]")
+
+    if (favButton.text() == "☆")
+    {
+        favButton.text("★");
+    } else {
+        favButton.text("☆");
+    }
+}
+
+
 $(function() {
 
     // This callback function is called when a file is selected
@@ -124,8 +143,6 @@ $(function() {
                 $ ("#historyInfo").show(); // build the table with provided info
                 for (const [index, element] of json_response.entries()) {
 
-                    console.log(element)
-
                     // form the thumbnail
                     // source is expected to be the base64 encoded image provided by the database
                     var img = "<img src=" + element.image + " width=64 height=64></img>"
@@ -142,8 +159,11 @@ $(function() {
                             .append($('<td>')
                                 .text(element.timestamp))
                             .append($('<td>')
-                                .append("<button class=\"btn btn-danger\">DELETE</button>")
-                                .attr('onClick', 'deleteQuery(' + index + ',' + element.id + ')'))
+                                .append($("<button class=\"btn btn-danger\">DELETE</button>")
+                                    .attr('onClick', 'deleteQuery(' + index + ',' + element.id + ')'))
+                                .append($("<button class=\"btn btn-warning\">☆</button>")
+                                    .attr('id', index)
+                                    .attr('onClick', 'favoriteQuery(' + index + ',' + element.id + ')')))
                         .attr('id', index)
                     );
                 }
