@@ -100,6 +100,11 @@ def transactions(request):
         id = image_data['id']
         try:
             image = Image.objects.filter(id=id).first()
+            image_data['id'] = image.id
+            image_data['image'] = image.image
+            image_data['timestamp'] = image.timestamp
+            image_data['classification'] = image.classification
+            image_data['description'] = image.description
             image_serializer = ImageSerializer(image, data=image_data)
             if image_serializer.is_valid():
                 image_serializer.save()
@@ -136,6 +141,5 @@ def get_favorites(request):
     """
     if request.method == 'GET':
         images = Image.objects.filter(favorite=True).order_by('-favorite')[:10]
-        print(images)
         image_serializer = ImageSerializer(images, many=True)
         return JsonResponse(image_serializer.data, safe=False)
