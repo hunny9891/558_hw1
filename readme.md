@@ -1,11 +1,11 @@
-# TCSS558 Applied Distributed Computing Homework 1
-This app implements an image classifier with transaction history. The client let's the user upload an image to a proxy server which in turn uses the third party azue cognitive API to give insights about the uploaded image and records the complete transaction in a postgres database.
+# TCSS558 Applied Distributed Computing Homework 1 / Homework 2
+This app implements an image classifier with transaction history. The client lets the user upload an image to a proxy server which in turn uses the third party Azure cognitive API to give insights about the uploaded image and records the complete transaction in a postgres database.
 
 The typical flow of the app is Client -> Proxy Server -> Third Party API -> Proxy Server -> Database -> Client
 
 The app constitutes of two major compnents hw1_backend and hw1_frontend, the first one is the server and the latter is the client.
 
-Currently deployed here: http://tcss558-homework1.uw.r.appspot.com/
+~~Currently deployed here: http://tcss558-homework1.uw.r.appspot.com/~~
 
 ## How to deploy the server (hw1_backend)
 ### Prerequisites
