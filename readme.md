@@ -8,7 +8,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
 ~~Currently deployed here: http://tcss558-homework1.uw.r.appspot.com/~~
 
 ## API Documentation
-***Get Query History***
+***Get Record History***
 ----
   Returns last 10 images and corresponding details that were processed by the proxy server 
 * **URL**
@@ -129,9 +129,9 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
       }
     });
   ```
-***Update Query Property***
+***Update Record Property***
 ----
-  Update a property of a query stored in the database. Intended for favoriting/unfavoriting certain queries
+  Update a property of a record stored in the database. Intended for favoriting/unfavoriting certain records
 * **URL**
 
   /api/images
@@ -156,7 +156,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
     **Content:**
     ```json
     {
-	    "success": "Query Updated Successfully!"
+	    "success": "Record Updated Successfully!"
 	}
     ```
  
@@ -166,7 +166,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
     **Content:** 
     ```json
 	{ 
-		"error" : "Query Update Failed!" 
+		"error" : "Record Update Failed!" 
 	}
 	```
 
@@ -190,7 +190,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
 
 ***Delete Query***
 ----
-  Delete a previous query from the database
+  Delete a previous record from the database
 * **URL**
 
   /api/images
@@ -215,7 +215,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
     **Content:**
     ```json
     {
-	    "success": "Query Deleted!"
+	    "success": "Record Deleted!"
 	}
     ```
  
@@ -225,7 +225,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
     **Content:** 
     ```json
     {
-	    "error": "Query Deletion Failed!"
+	    "error": "Record Deletion Failed!"
 	}
 	```
 
