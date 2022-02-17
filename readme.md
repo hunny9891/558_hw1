@@ -7,6 +7,69 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
 
 ~~Currently deployed here: http://tcss558-homework1.uw.r.appspot.com/~~
 
+## API Documentation
+***Get Query History***
+----
+  Returns last 10 images and corresponding details that were processed by the proxy server 
+* **URL**
+
+  /api/images
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```json
+	[
+	    {
+	        "id": 9,
+	        "name": "sunset.jpg",
+	        "image": "data:image/jpeg;base64,x...==",
+	        "timestamp": "2022-02-17T18:54:01.596533Z",
+	        "classification": "nature,sunset,night sky",
+	        "description": "a silhouette of a deer in front of a sunset",
+	        "favorite": false
+	    },
+	    ...
+	    {
+	        "id": 0,
+	        "name": "foo.jpg",
+	        "image": "data:image/jpeg;base64,x...==",
+	        "timestamp": "2022-02-17T05:11:19.687503Z",
+	        "classification": "tree,animal,tiger,mammal,blurry",
+	        "description": "a tiger in the grass",
+	        "favorite": false
+	    }
+	]
+	```
+
+* **Sample Call:**
+
+  ```javascript
+    $.ajax({
+      url: "host/api/images",
+      dataType: "json",
+      type : "GET",
+      success : function(r) {
+        console.log(r);
+      }
+    });
+  ```
+
 ## How to deploy the server (hw1_backend)
 ### Prerequisites
 You should have installed a Python environment with version >= 3.9.
