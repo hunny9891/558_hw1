@@ -155,7 +155,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
   * **Code:** 200 <br />
     **Content:**
     ```json
-	'Record Updated Successfully!'
+	"Record Updated Successfully!"
     ```
  
 * **Error Response:**
