@@ -20,8 +20,6 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
   `GET`
   
 *  **URL Params**
-
-   **Required:**
  
    None
 
@@ -69,6 +67,69 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
       }
     });
   ```
+
+***Get Image Description***
+----
+  Given that a user provides an image (as a base64 string), return tags and a description of that image
+* **URL**
+
+  /api/images
+
+* **Method:**
+
+  `POST`
+  
+*  **URL Params**
+ 
+   None
+
+* **Data Params**
+
+   **Required:**
+ 
+   `name=[string], image=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+	{
+	    "name": "sunset.jpg",
+	    "classification": "nature,sunset,night sky",
+	    "description": "a silhouette of a deer in front of a sunset"
+	}
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** 
+    ```json
+	{ 
+		"error" : "Provide the required arguments" 
+	}
+	```
+
+* **Sample Call:**
+
+  ```javascript
+	var json_data = {};
+	json_data.name = "sunset.jpg";
+	json_data.image = "data:image/jpeg;base64,xxx==";
+
+    $.ajax({
+      url: "host/api/images",
+		type: "POST",
+		dataType: "json",
+		contentType: 'application/json',
+		data: JSON.stringify(json_data),
+      success : function(r) {
+        console.log(r);
+      }
+    });
+  ```
+
 
 ## How to deploy the server (hw1_backend)
 ### Prerequisites
