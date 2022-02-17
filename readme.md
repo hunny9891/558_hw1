@@ -186,6 +186,61 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
     });
   ```
 
+***Delete Query***
+----
+  Delete a previous query from the database
+* **URL**
+
+  /api/images
+
+* **Method:**
+
+  `DELETE`
+  
+*  **URL Params**
+ 
+   None
+
+* **Data Params**
+
+   **Required:**
+ 
+   `id=[integer]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+	""
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** 
+    ```json
+	"Something went wrong while deleting the image!"
+	```
+
+* **Sample Call:**
+
+  ```javascript
+	var json_data = {};
+	json_data.id = 3;
+
+    $.ajax({
+      url: "host/api/images",
+		type: "DELETE",
+		dataType: "json",
+		contentType: 'application/json',
+		data: JSON.stringify(json_data),
+      success : function(r) {
+        console.log(r);
+      }
+    });
+  ```
+
 ## How to deploy the server (hw1_backend)
 ### Prerequisites
 You should have installed a Python environment with version >= 3.9.
