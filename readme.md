@@ -107,7 +107,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
     **Content:** 
     ```json
 	{ 
-		"error" : "Provide the required arguments" 
+		"error" : "Failed to Process Image!" 
 	}
 	```
 
@@ -116,7 +116,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
   ```javascript
 	var json_data = {};
 	json_data.name = "sunset.jpg";
-	json_data.image = "data:image/jpeg;base64,xxx==";
+	json_data.image = "data:image/jpeg;base64,x...==";
 
     $.ajax({
       url: "host/api/images",
@@ -155,7 +155,9 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
   * **Code:** 200 <br />
     **Content:**
     ```json
-	"Record Updated Successfully!"
+    	{
+		"success": "Query Updated Successfully!"
+	}
     ```
  
 * **Error Response:**
@@ -164,7 +166,7 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
     **Content:** 
     ```json
 	{ 
-		"error" : "Failed to update image!" 
+		"error" : "Query Update Failed!" 
 	}
 	```
 
@@ -212,7 +214,9 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
   * **Code:** 200 <br />
     **Content:**
     ```json
-	""
+    	{
+		"success": "Query Deleted!"
+	}
     ```
  
 * **Error Response:**
@@ -220,7 +224,9 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
   * **Code:** 400 BAD REQUEST <br />
     **Content:** 
     ```json
-	"Something went wrong while deleting the image!"
+    	{
+		"error": "Query Deletion Failed!"
+	}
 	```
 
 * **Sample Call:**
