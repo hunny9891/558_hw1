@@ -129,7 +129,62 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
       }
     });
   ```
+***Update Query Property***
+----
+  Update a property of a query stored in the database. Intended for favoriting/unfavoriting certain queries
+* **URL**
 
+  /api/images
+
+* **Method:**
+
+  `PUT`
+  
+*  **URL Params**
+ 
+   None
+
+* **Data Params**
+
+   **Required:**
+ 
+   `id=[integer]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+	'Record Updated Successfully!'
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** 
+    ```json
+	{ 
+		"error" : "Failed to update image!" 
+	}
+	```
+
+* **Sample Call:**
+
+  ```javascript
+	var json_data = {};
+	json_data.id = 3;
+
+    $.ajax({
+      url: "host/api/images",
+		type: "PUT",
+		dataType: "json",
+		contentType: 'application/json',
+		data: JSON.stringify(json_data),
+      success : function(r) {
+        console.log(r);
+      }
+    });
+  ```
 
 ## How to deploy the server (hw1_backend)
 ### Prerequisites
