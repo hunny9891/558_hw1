@@ -155,8 +155,8 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
   * **Code:** 200 <br />
     **Content:**
     ```json
-    	{
-		"success": "Query Updated Successfully!"
+    {
+	    "success": "Query Updated Successfully!"
 	}
     ```
  
@@ -214,8 +214,8 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
   * **Code:** 200 <br />
     **Content:**
     ```json
-    	{
-		"success": "Query Deleted!"
+    {
+	    "success": "Query Deleted!"
 	}
     ```
  
@@ -224,8 +224,8 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
   * **Code:** 400 BAD REQUEST <br />
     **Content:** 
     ```json
-    	{
-		"error": "Query Deletion Failed!"
+    {
+	    "error": "Query Deletion Failed!"
 	}
 	```
 
