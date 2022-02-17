@@ -41,9 +41,9 @@ def classify_image(image):
         [tuple]: A tuple of description and categories for the
                     image.
     """
-    url = 'https://tutorial1--cv.cognitiveservices.azure.com/vision/v3.2/analyze?visualFeatures=Tags,Description'
+    url = 'https://what-is-this-thing.cognitiveservices.azure.com/vision/v3.2/analyze?visualFeatures=Tags,Description'
     headers = {
-        'Ocp-Apim-Subscription-Key': '81451e83dd51453da85b6ab37d3824ba',
+        'Ocp-Apim-Subscription-Key': '52b61024cb14439e98f6485249311b0e',
     }
     #bin_image = open('./img_class_service/babyme.jpeg', 'rb')
     files = [('', ('dummy.jpeg', image, 'image/jpeg'))]
