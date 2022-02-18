@@ -108,7 +108,8 @@ def transactions(request):
                 image_serializer.save()
                 del image_data['image']  # client already has source image, no need to send back
                 return JsonResponse(image_data, status=status.HTTP_201_CREATED, safe=False)
-            return JsonResponse({'message': 'Failed to save data to database!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
+            ERROR_MESSAGE[ERROR] = "Failed to process Image!"
+            return JsonResponse(ERROR_MESSAGE, status=status.HTTP_500_INTERNAL_SERVER_ERROR, safe=False)
         except Exception as e:
             print(e)
             ERROR_MESSAGE[ERROR] = "Failed to process Image!"
