@@ -166,6 +166,6 @@ def get_favorites(request):
         [JsonResponse]: Returns top 10 most recent favorites.
     """
     if request.method == 'GET':
-        images = Image.objects.filter(favorite=True).order_by('-favorite')[:10]
+        images = Image.objects.filter(favorite=True).order_by('-id')[:10]
         image_serializer = ImageSerializer(images, many=True)
         return JsonResponse(image_serializer.data, safe=False)
