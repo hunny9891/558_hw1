@@ -67,6 +67,66 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
       }
     });
   ```
+  
+***Get Favorited Records***
+----
+  Returns records that were flagged as favorited in the database
+* **URL**
+
+  /api/images/favorites
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+ 
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    ```json
+	[
+	    {
+	        "id": 11,
+	        "name": "sunset2.jpg",
+	        "image": "data:image/jpeg;base64,x...==",
+	        "timestamp": "2022-02-17T18:54:01.596533Z",
+	        "classification": "nature,sunset,night sky",
+	        "description": "a silhouette of a deer in front of a sunset",
+	        "favorite": true
+	    },
+	    ...
+	    {
+	        "id": 10,
+	        "name": "foo2.jpg",
+	        "image": "data:image/jpeg;base64,x...==",
+	        "timestamp": "2022-02-17T05:11:19.687503Z",
+	        "classification": "tree,animal,tiger,mammal,blurry",
+	        "description": "a tiger in the grass",
+	        "favorite": true
+	    }
+	]
+	```
+
+* **Sample Call:**
+
+  ```javascript
+    $.ajax({
+      url: "host/api/images/favorites",
+      dataType: "json",
+      type : "GET",
+      success : function(r) {
+        console.log(r);
+      }
+    });
+  ```
 
 ***Get Image Description***
 ----
