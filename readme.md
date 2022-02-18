@@ -5,7 +5,7 @@ The typical flow of the app is Client -> Proxy Server -> Third Party API -> Prox
 
 The app constitutes of two major compnents hw1_backend and hw1_frontend, the first one is the server and the latter is the client.
 
-~~ Frontend currently deployed here: http://tcss558-homework1.uw.r.appspot.com/~~
+~~Frontend currently deployed here: http://tcss558-homework1.uw.r.appspot.com/
 
 Backend API currently deployed here (host): http://django-env-hw2.eba-j7gziw4a.us-west-2.elasticbeanstalk.com
 
