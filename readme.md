@@ -68,6 +68,11 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
     });
   ```
   
+	 ****Curl****
+	 ```console
+	curl --location --request GET 'host/api/images' 
+	 ```
+  
 ***Get Favorited Records***
 ----
   Returns records that were flagged as favorited in the database
@@ -127,6 +132,10 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
       }
     });
   ```
+	 ****Curl****
+	 ```console
+	curl --location --request GET 'host/api/images/favorites' 
+	 ```
 
 ***Get Image Description***
 ----
@@ -189,6 +198,11 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
       }
     });
   ```
+	 ****Curl****
+	 ```console
+	curl --location --request POST 'host/api/images'  --header 'Content-Type: application/json' --data-raw '{"name": "sunset.jpg", "image": "data:image/jpeg;base64,x...=="}'
+	 ```
+
 ***Update Record Property***
 ----
   Update a property of a record stored in the database. Intended for favoriting/unfavoriting certain records
@@ -234,6 +248,9 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
 
   ```javascript
 	var json_data = {};
+	json_data.name = "foo";  // need to include dummy name string
+	json_data.image = "foo";  // need to include dummy image string
+	json_data.name = true;
 	json_data.id = 3;
 
     $.ajax({
@@ -247,6 +264,10 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
       }
     });
   ```
+	 ****Curl****
+	 ```console
+	curl --location --request PUT'host/api/images'  --header 'Content-Type: application/json' --data-raw '{"name": "foo", "image": "foo", "favorite": true, "id": 3}'
+	 ```
 
 ***Delete Query***
 ----
@@ -293,6 +314,8 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
 
   ```javascript
 	var json_data = {};
+	json_data.name = "foo";  // need to include dummy name string
+	json_data.image = "foo";  // need to include dummy image string
 	json_data.id = 3;
 
     $.ajax({
@@ -306,6 +329,10 @@ The app constitutes of two major compnents hw1_backend and hw1_frontend, the fir
       }
     });
   ```
+  	 ****Curl****
+	 ```console
+	curl --location --request DELETE'host/api/images'  --header 'Content-Type: application/json' --data-raw '{"name": "foo", "image": "foo", "id": 3}'
+	 ```
 
 ## How to deploy the server (hw1_backend)
 ### Prerequisites
@@ -327,4 +354,3 @@ You should have installed Postgres > 10 or have third party service of the same.
 3. Follow https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.managing.db.html to create database
 4. Update hw1_frontend/www/index.html to use the endpoint given by AWS
 5. Follow https://cloud.google.com/appengine/docs/standard/python/getting-started/hosting-a-static-website to deploy the client (hw1_frontend) to gcloud
-
