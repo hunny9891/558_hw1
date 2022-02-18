@@ -162,7 +162,7 @@ Backend API currently deployed here (host): http://django-env-hw2.eba-j7gziw4a.u
 
 * **Success Response:**
 
-  * **Code:** 200 <br />
+  * **Code:** 201 <br />
     **Content:**
     ```json
 	{
@@ -252,7 +252,7 @@ Backend API currently deployed here (host): http://django-env-hw2.eba-j7gziw4a.u
 	var json_data = {};
 	json_data.name = "foo";  // need to include dummy name string
 	json_data.image = "foo";  // need to include dummy image string
-	json_data.name = true;
+	json_data.favorite = true;
 	json_data.id = 3;
 
     $.ajax({
